@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SimpleWeather</string>
+    <string name="action_settings">Settings</string>
+    <string name="access_gps_permission_denied">GPS disabled, failed to search.</string>
+</resources>
