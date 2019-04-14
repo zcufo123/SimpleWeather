@@ -35,6 +35,7 @@ import com.test.simpleweatherlogic.ResultObservable;
 import com.test.simpleweatherlogic.ResultObserver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static boolean KEYWORD_SEARCH = true;
 
-    private static final String KEYWORD = "auckland";
+    private static final String[] KEYWORD = {"auckland,nz", "dublin, ie", "wellington,nz"};
 
     @Inject
     CityViewModel cityViewModel;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Please swipe left and right to switch different cities", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         viewModelComponent.inject(this);
 
         if (KEYWORD_SEARCH) {
-            ResultObservable<List<City>> cityList = cityViewModel.fetchCity(KEYWORD);
+            ResultObservable<List<City>> cityList = cityViewModel.fetchCity(Arrays.asList(KEYWORD));
             cityList.setResultObserver(new ResultObserver<List<City>>() {
                 @Override
                 public void notifyUpdate(List<City> cities) {

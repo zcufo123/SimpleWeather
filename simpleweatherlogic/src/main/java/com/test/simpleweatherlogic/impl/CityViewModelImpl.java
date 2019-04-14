@@ -1,11 +1,14 @@
 package com.test.simpleweatherlogic.impl;
 
+import android.os.Parcelable;
+
 import com.test.simpleweatherapi.SimpleWeatherAPI;
 import com.test.simpleweatherapi.model.City;
 import com.test.simpleweatherlogic.CityViewModel;
 import com.test.simpleweatherlogic.Reactive.RxRunner;
 import com.test.simpleweatherlogic.ResultObservable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CityViewModelImpl implements CityViewModel {
@@ -23,6 +26,23 @@ public class CityViewModelImpl implements CityViewModel {
             @Override
             public List<City> execute() {
                 return simpleWeatherAPI.fetchCity(keyWord);
+            }
+        }, resultObservable);
+        return resultObservable;
+    }
+
+    @Override
+    public ResultObservable<List<City>> fetchCity(final List<String> keyWords) {
+        final ResultObservable<List<City>> resultObservable = new ResultObservable<>();
+        new RxRunner<List<City>>().run(new RxRunner.RxRunnerExecutor<List<City>>() {
+            @Override
+            public List<City> execute() {
+                List<City> cityList = new ArrayList<>();
+                for(String keyWord : keyWords) {
+                    List<City> cities = simpleWeatherAPI.fetchCity(keyWord);
+                    cityList.addAll(cities);
+                }
+                return cityList;
             }
         }, resultObservable);
         return resultObservable;

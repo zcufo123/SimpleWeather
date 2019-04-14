@@ -1,5 +1,7 @@
 package com.test.simpleweatherlogic.impl;
 
+import android.os.Parcelable;
+
 import com.test.simpleweatherapi.SimpleWeatherAPI;
 import com.test.simpleweatherapi.model.City;
 import com.test.simpleweatherapi.model.WeatherInfo;
@@ -7,6 +9,7 @@ import com.test.simpleweatherlogic.Reactive.RxRunner;
 import com.test.simpleweatherlogic.ResultObservable;
 import com.test.simpleweatherlogic.WeatherViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WeatherViewModelImpl implements WeatherViewModel {
@@ -24,6 +27,22 @@ public class WeatherViewModelImpl implements WeatherViewModel {
             @Override
             public WeatherInfo execute() {
                 return simpleWeatherAPI.fetchCurrentWeather(city);
+            }
+        }, resultObservable);
+        return resultObservable;
+    }
+
+    @Override
+    public ResultObservable<List<WeatherInfo>> getCurrentWeahter(final List<City> cityList) {
+        final ResultObservable<List<WeatherInfo>> resultObservable = new ResultObservable<>();
+        new RxRunner<List<WeatherInfo>>().run(new RxRunner.RxRunnerExecutor<List<WeatherInfo>>() {
+            @Override
+            public List<WeatherInfo> execute() {
+                List<WeatherInfo> weatherInfoList = new ArrayList<>();
+                for(City city : cityList) {
+                    weatherInfoList.add(simpleWeatherAPI.fetchCurrentWeather(city));
+                }
+                return weatherInfoList;
             }
         }, resultObservable);
         return resultObservable;

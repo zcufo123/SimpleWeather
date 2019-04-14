@@ -8,5 +8,7 @@ import java.util.List;
 public interface WeatherViewModel {
     ResultObservable<WeatherInfo> getCurrentWeather(City city);
 
+    ResultObservable<List<WeatherInfo>> getCurrentWeahter(List<City> cityList);
+
     ResultObservable<List<WeatherInfo>> getForecastWeather(City city);
 }
